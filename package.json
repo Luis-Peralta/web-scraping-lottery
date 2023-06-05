@@ -1,0 +1,23 @@
+{
+  "name": "web-scraping-lottery",
+  "version": "1.0.0",
+  "description": "web scraping project lottery",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luis-Peralta/web-scraping-lottery.git"
+  },
+  "author": "LuisPeralta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Luis-Peralta/web-scraping-lottery/issues"
+  },
+  "homepage": "https://github.com/Luis-Peralta/web-scraping-lottery#readme",
+  "dependencies": {
+    "mongodb": "^5.6.0",
+    "puppeteer": "^20.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.42.0"
+  }
+}
