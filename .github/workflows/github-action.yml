@@ -23,8 +23,8 @@ jobs:
       - name: Create env file
         run: |
           touch .env
-          echo URL=${{ vars.URL }} >> .env  
-          echo DB_URI=${{ vars.DB_URI }} >> .env  
+          echo URL='${{ vars.URL }}' >> .env  
+          echo DB_URI='${{ vars.DB_URI }}' >> .env  
           echo DB_NAME=${{ vars.DB_NAME }} >> .env  
           echo COLLECTION=${{ vars.COLLECTION }} >> .env  
           echo ALL_DATA=${{ vars.ALL_DATA }} >> .env  
