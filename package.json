@@ -2,7 +2,10 @@
   "name": "web-scraping-lottery",
   "version": "1.0.0",
   "description": "web scraping project lottery",
-  "scripts": {},
+  "scripts": {
+    "data": "node script\\extractAll.js"
+  },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Luis-Peralta/web-scraping-lottery.git"
