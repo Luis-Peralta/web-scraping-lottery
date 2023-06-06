@@ -2,9 +2,8 @@ name: Pipeline github
 run-name: ${{ github.actor }} is executing the pipeline...
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '*/5 * * * *'
 
 jobs:
   install-dependencies:
