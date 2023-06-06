@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import puppeteer from 'puppeteer';
+import { run } from './mongoConnection.js';
 import 'dotenv/config';
 
 //const selectors:::
@@ -42,7 +43,8 @@ const itemsRight = '[class="results-list__item"] .results-number:nth-child(2)';
     await page.goBack();
   }
 
-  console.log(allResults);
-
+  console.table(allResults);
   await browser.close();
+
+  process.env.SAVE_DATA.toLowerCase() === 'true' ? run(allResults) : console.log('data not sent to MongoDB');
 })();
