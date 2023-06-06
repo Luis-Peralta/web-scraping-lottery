@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "web scraping project lottery",
   "scripts": {
-    "data": "node script\\extractAll.js",
+    "data": "node script/extractAll.js",
     "eslint": "npx eslint script"
   },
   "type": "module",
