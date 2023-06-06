@@ -21,14 +21,6 @@ jobs:
       - name: Verify eslint
         run: npm run eslint
       - name: Create env file
-        run: |
-          touch .env
-          echo URL='${{ vars.URL }}' >> .env  
-          echo DB_URI='${{ vars.DB_URI }}' >> .env  
-          echo DB_NAME=${{ vars.DB_NAME }} >> .env  
-          echo COLLECTION=${{ vars.COLLECTION }} >> .env  
-          echo ALL_DATA=${{ vars.ALL_DATA }} >> .env  
-          echo SAVE_DATA=${{ vars.SAVE_DATA }} >> .env  
-          cat .env
+        run: echo "${{ secrets.ENV_FILE }}" > .env 
       - name: Run script
         run: npm run data  
