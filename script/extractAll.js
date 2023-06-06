@@ -17,6 +17,7 @@ const regexFecha = /([\d]{2}\/[\d]{2}\/[\d]{2})/gm;
 const regexNumber = /[0-9]{1,2}/gm;
 
 (async () => {
+  console.log('\x1b[36mObtaining data...\x1b[0m');
   //data:::
   const allResults = [];
   const objectResult = {};
@@ -36,18 +37,10 @@ const regexNumber = /[0-9]{1,2}/gm;
       const fecha = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
       objectResult.sorteo = parseInt(sorteo[index].match(regexSorteo)[0]);
       objectResult.fecha = fecha[index].match(regexFecha)[0];
-      
       const results = await page.$$(iconPlus);
       await results[index].evaluate(button => button.click());
-      await page.waitForSelector(tableHeader);
   
-      const nSorteo = await page.$eval(tableHeader, text => text.textContent);
-      objectResult.results.numSorteo = parseInt(nSorteo.match(regexSorteo)[0]);
-      const ubicacion = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
-      const premiados = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
-      for (let index = 0; index < 10; index++) {
-        objectResult.results[`number-${ubicacion[index].match(regexNumber)[0]}`] = parseInt(premiados[index].match(regexNumber)[0]);
-      }
+      await obtainNumbers();
   
       allResults.push(objectResult);
       await page.goBack();
@@ -61,8 +54,15 @@ const regexNumber = /[0-9]{1,2}/gm;
     objectResult.sorteo = parseInt(sorteo.match(regexSorteo)[0]);
     objectResult.fecha = fecha.match(regexFecha)[0];
     await page.click(firstIconPlus);
+
+    await obtainNumbers();
+
+    allResults.push(objectResult);
+  }
+
+  //function to obtain the all results for each sorteo
+  async function obtainNumbers() {
     await page.waitForSelector(tableHeader);
-    
     const nSorteo = await page.$eval(tableHeader, text => text.textContent);
     objectResult.results.numSorteo = parseInt(nSorteo.match(regexSorteo)[0]);
     const ubicacion = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
@@ -70,12 +70,11 @@ const regexNumber = /[0-9]{1,2}/gm;
     for (let index = 0; index < 10; index++) {
       objectResult.results[`number-${ubicacion[index].match(regexNumber)[0]}`] = parseInt(premiados[index].match(regexNumber)[0]);
     }
-
-    allResults.push(objectResult);
   }
-  
-  console.log(allResults);
-  await browser.close();
 
-  process.env.SAVE_DATA.toLowerCase() === 'true' ? run(allResults) : console.log('data not sent to MongoDB');
+  console.table(allResults);
+  await browser.close();
+  console.log('\x1b[36mScript finished!\x1b[0m');
+
+  process.env.SAVE_DATA.toLowerCase() === 'true' ? run(allResults) : console.log('\x1b[33mdata not sent to MongoDB\x1b[0m');
 })();
