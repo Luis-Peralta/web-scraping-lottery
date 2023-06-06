@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is executing the pipeline...
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 0,1,2 * * TUE,THU,SAT'
 
 jobs:
   install-dependencies:
