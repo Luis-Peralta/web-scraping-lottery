@@ -9,41 +9,72 @@ const tableHeader = '.card-header h5';
 const iconPlus = '.results-list__item a';
 const itemsLeft = '[class="results-list__item"] .results-number:nth-child(1)';
 const itemsRight = '[class="results-list__item"] .results-number:nth-child(2)';
+const firstLeft = '[class="results-list__item"]:nth-child(2) .results-number:nth-child(1)';
+const firstRight = '[class="results-list__item"]:nth-child(2) .results-number:nth-child(2)';
+const firstIconPlus = '.results-list__item:nth-child(2) a';
+const regexSorteo = /[0-9]{1,7}/gm;
+const regexFecha = /([\d]{2}\/[\d]{2}\/[\d]{2})/gm;
+const regexNumber = /[0-9]{1,2}/gm;
 
 (async () => {
+  //data:::
   const allResults = [];
+  const objectResult = {};
+  objectResult.results = {};
+
+  //puppet config:::
   const browser = await puppeteer.launch({ headless: 'new', defaultViewport: null, args:['--start-maximized' ] });
   const page = await browser.newPage();
-
   await page.goto(process.env.URL);
   await page.waitForSelector(table);
 
-  for (let index = 0; index < 10; index++) {
-    const objectResult = {};
-    objectResult.results = {};
-    await page.waitForSelector(iconPlus);
-    const sorteo = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent.match(/[0-9]{1,7}/gm)); });
-    const fecha = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent.match(/([\d]{2}\/[\d]{2}\/[\d]{2})/gm)); });
-    objectResult.sorteo = parseInt(sorteo[index][0]);
-    objectResult.fecha = fecha[index][0];
-    
-    const results = await page.$$(iconPlus);
-    await results[index].evaluate(button => button.click());
-    await page.waitForSelector(tableHeader);
-
-    const nSorteo = await page.$eval(tableHeader, text => text.textContent.match(/[0-9]{1,7}/gm));
-    objectResult.results.numSorteo = parseInt(nSorteo[0]);
-    const ubicacion = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent.match(/[0-9]{1,2}/gm)); });
-    const premiados = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent.match(/[0-9]{1,2}/gm)); });
+  //save all data:::disable by default
+  if(process.env.SAVE_DATA_ALL.toLowerCase() === 'true') {
     for (let index = 0; index < 10; index++) {
-      objectResult.results[`number-${ubicacion[index][0]}`] = parseInt(premiados[index][0]);
+      await page.waitForSelector(iconPlus);
+      const sorteo = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
+      const fecha = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
+      objectResult.sorteo = parseInt(sorteo[index].match(regexSorteo)[0]);
+      objectResult.fecha = fecha[index].match(regexFecha)[0];
+      
+      const results = await page.$$(iconPlus);
+      await results[index].evaluate(button => button.click());
+      await page.waitForSelector(tableHeader);
+  
+      const nSorteo = await page.$eval(tableHeader, text => text.textContent);
+      objectResult.results.numSorteo = parseInt(nSorteo.match(regexSorteo)[0]);
+      const ubicacion = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
+      const premiados = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
+      for (let index = 0; index < 10; index++) {
+        objectResult.results[`number-${ubicacion[index].match(regexNumber)[0]}`] = parseInt(premiados[index].match(regexNumber)[0]);
+      }
+  
+      allResults.push(objectResult);
+      await page.goBack();
+    }
+  } else {
+    //save the last results (first element):::
+    await page.waitForSelector(iconPlus);
+    const sorteo = await page.$eval(firstLeft, text => text.textContent);
+    const fecha = await page.$eval(firstRight, text => text.textContent);
+
+    objectResult.sorteo = parseInt(sorteo.match(regexSorteo)[0]);
+    objectResult.fecha = fecha.match(regexFecha)[0];
+    await page.click(firstIconPlus);
+    await page.waitForSelector(tableHeader);
+    
+    const nSorteo = await page.$eval(tableHeader, text => text.textContent);
+    objectResult.results.numSorteo = parseInt(nSorteo.match(regexSorteo)[0]);
+    const ubicacion = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
+    const premiados = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
+    for (let index = 0; index < 10; index++) {
+      objectResult.results[`number-${ubicacion[index].match(regexNumber)[0]}`] = parseInt(premiados[index].match(regexNumber)[0]);
     }
 
     allResults.push(objectResult);
-    await page.goBack();
   }
-
-  console.table(allResults);
+  
+  console.log(allResults);
   await browser.close();
 
   process.env.SAVE_DATA.toLowerCase() === 'true' ? run(allResults) : console.log('data not sent to MongoDB');
