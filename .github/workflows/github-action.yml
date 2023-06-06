@@ -18,7 +18,10 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm install
-      - name: Eslint
+      - name: Verify eslint
         run: npm run eslint
+      - name: Create env file
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env  
       - name: Run script
         run: npm run data  
