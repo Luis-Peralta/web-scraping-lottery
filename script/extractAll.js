@@ -26,12 +26,12 @@ const regexNumber = /[0-9]{1,2}/gm;
   const page = await browser.newPage();
   await page.goto(process.env.URL);
   await page.waitForSelector(table);
+  await page.waitForSelector(iconPlus);
 
   //save all data:::disable by default
-  if(process.env.SAVE_DATA_ALL.toLowerCase() === 'true') {
+  if(process.env.ALL_DATA.toLowerCase() === 'true') {
     for (let index = 0; index < 10; index++) {
       const objectResult = { results: {} };
-      await page.waitForSelector(iconPlus);
       const sorteo = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
       const fecha = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
       objectResult.sorteo = parseInt(sorteo[index].match(regexSorteo)[0]);
@@ -47,7 +47,6 @@ const regexNumber = /[0-9]{1,2}/gm;
   } else {
     //save the last results (first element):::
     const objectResult = { results: {} };
-    await page.waitForSelector(iconPlus);
     const sorteo = await page.$eval(firstLeft, text => text.textContent);
     const fecha = await page.$eval(firstRight, text => text.textContent);
 
