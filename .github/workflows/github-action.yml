@@ -29,5 +29,6 @@ jobs:
           echo COLLECTION=${{ env.COLLECTION }} >> .env  
           echo ALL_DATA=${{ env.ALL_DATA }} >> .env  
           echo SAVE_DATA=${{ env.SAVE_DATA }} >> .env  
+          cat .env
       - name: Run script
         run: npm run data  
