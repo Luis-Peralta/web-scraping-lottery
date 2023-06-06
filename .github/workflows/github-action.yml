@@ -1,0 +1,22 @@
+name: Pipeline github
+run-name: ${{ github.actor }} is executing the pipeline...
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Eslint
+        run: npm run eslint
