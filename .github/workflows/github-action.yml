@@ -22,6 +22,12 @@ jobs:
         run: npm run eslint
       - name: Create env file
         run: |
-          echo "${{ secrets.ENV_FILE }}" > .env  
+          touch .env
+          echo URL=${{ env.URL }} >> .env  
+          echo DB_URI=${{ env.DB_URI }} >> .env  
+          echo DB_NAME=${{ env.DB_NAME }} >> .env  
+          echo COLLECTION=${{ env.COLLECTION }} >> .env  
+          echo ALL_DATA=${{ env.ALL_DATA }} >> .env  
+          echo SAVE_DATA=${{ env.SAVE_DATA }} >> .env  
       - name: Run script
         run: npm run data  
