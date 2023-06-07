@@ -4,6 +4,7 @@
   "description": "web scraping project lottery",
   "scripts": {
     "data": "node script/extractAll.js",
+    "lucky": "node script/sendMsg.js",
     "eslint": "npx eslint script"
   },
   "type": "module",
@@ -20,7 +21,8 @@
   "dependencies": {
     "dotenv": "^16.1.4",
     "mongodb": "^5.6.0",
-    "puppeteer": "^20.5.0"
+    "puppeteer": "^20.5.0",
+    "twilio": "^4.11.2"
   },
   "devDependencies": {
     "eslint": "^8.42.0"

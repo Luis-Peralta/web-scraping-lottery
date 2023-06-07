@@ -22,4 +22,6 @@ jobs:
       - name: Create env file
         run: echo "${{ secrets.ENV_FILE }}" > .env 
       - name: Run script
-        run: npm run data  
+        run: npm run data
+      - name: Sending the lucky numbers!
+        run: npm run lucky
