@@ -11,8 +11,8 @@ if( date.includes('Thu') || date.includes('Sat') || date.includes('Tue') ) {
   client.messages
     .create({
       body: `Los números de la suerte para la próxima poceada son: ${giveLuckyNumbers().toString().replaceAll(',',', ')}`,
-      from: '+16362384935',
-      to: '+543624747305'
+      from: process.env.FROM_NUMBER,
+      to: process.env.TO_NUMBER
     })
     .then(message => console.log(message.sid));
 } else {
@@ -21,12 +21,12 @@ if( date.includes('Thu') || date.includes('Sat') || date.includes('Tue') ) {
 
 /*
 ******Code to send to multiple numbers !!! DON'T REMOVE*****
-const numbersToMessage = ['+543624747305', '+543624547941'];
+const numbersToMessage = ['number1, 'number2'];
 
 numbersToMessage.forEach(async number => {
   const message = await client.messages.create({
     body: `Los números de la suerte para la proxima poceada son: ${giveLuckyNumbers()}`,
-    from: '+13613012013',
+    from: 'from_number',
     to: number
   });
   console.log(message.status);
