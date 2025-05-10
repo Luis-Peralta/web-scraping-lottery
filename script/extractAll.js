@@ -22,7 +22,7 @@ const regexNumber = /[0-9]{1,2}/gm;
   const allResults = [];
 
   //puppet config:::
-  const browser = await puppeteer.launch({ headless: 'new', defaultViewport: null, args:['--start-maximized' ] });
+  const browser = await puppeteer.launch({ headless: 'new', defaultViewport: null, args:['--start-maximized', '--no-sandbox' ] });
   const page = await browser.newPage();
   await page.goto(process.env.URL);
   await page.waitForSelector(table);
