@@ -4,4 +4,4 @@
 ## Web scraping - Lottery project
 This project focuses on web scraping, utilizing the Puppeteer library and Mongodb as the primary technologies. The pipeline is designed to execute on specific days, namely Tuesday, Thursday, and Saturday. During each run, the project extracts valuable data from targeted sources on the web and subsequently stores it in a structured format within the MongoDB database.
 
-### last updated: 07-01-2024
+### last updated: 09-may-2024
