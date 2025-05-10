@@ -9,7 +9,16 @@ on:
 jobs:
   install-dependencies:
     runs-on: ubuntu-latest
+    env:
+      ALL_DATA: ${{ vars.ALL_DATA }}
+      COLLECTION: ${{ vars.COLLECTION }}
+      DB_NAME: ${{ vars.DB_NAME }}
+      SAVE_DATA: ${{ vars.SAVE_DATA }}
+      URL: ${{ vars.URL }}
     steps:
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -20,8 +29,6 @@ jobs:
         run: npm install
       - name: Verify eslint
         run: npm run eslint
-      - name: Create env file
-        run: echo "${{ secrets.ENV_FILE }}" > .env 
       - name: Run script
         run: npm run data
       - name: Sending the lucky numbers!
