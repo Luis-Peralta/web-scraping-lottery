@@ -4,6 +4,7 @@ run-name: ${{ github.actor }} is executing the pipeline...
 on:
   schedule:
     - cron: '0 1 * * *'
+  workflow_dispatch:  
 
 jobs:
   install-dependencies:
