@@ -24,9 +24,9 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '21'
       - name: Install dependencies
-        run: npm install
+        run: npm i --legacy-peer-deps
       - name: Verify eslint
         run: npm run eslint
       - name: Run script
