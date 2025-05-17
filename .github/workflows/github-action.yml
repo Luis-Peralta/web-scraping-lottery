@@ -19,14 +19,14 @@ jobs:
       - uses: oNaiPs/secrets-to-env-action@v1
         with:
           secrets: ${{ toJSON(secrets) }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: '21'
       - name: Install dependencies
-        run: npm i --legacy-peer-deps
+        run: npm i
       - name: Verify eslint
         run: npm run eslint
       - name: Run script
