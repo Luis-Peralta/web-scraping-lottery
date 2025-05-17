@@ -19,10 +19,10 @@ jobs:
       - uses: oNaiPs/secrets-to-env-action@v1
         with:
           secrets: ${{ toJSON(secrets) }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.2.0
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4.2.0
         with:
           node-version: '18'
       - name: Install dependencies
