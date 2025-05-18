@@ -12,6 +12,7 @@ const itemsRight = '[class="results-list__item"] .results-number:nth-child(2)';
 const firstLeft = '[class="results-list__item"]:nth-child(2) .results-number:nth-child(1)';
 const firstRight = '[class="results-list__item"]:nth-child(2) .results-number:nth-child(2)';
 const firstIconPlus = '.results-list__item:nth-child(2) a';
+const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0';
 const regexSorteo = /[0-9]{1,7}/gm;
 const regexFecha = /([\d]{2}\/[\d]{2}\/[\d]{2})/gm;
 const regexNumber = /[0-9]{1,2}/gm;
@@ -24,6 +25,7 @@ const regexNumber = /[0-9]{1,2}/gm;
   //puppet config:::
   const browser = await puppeteer.launch({ headless: 'new', defaultViewport: null, args:['--start-maximized', '--no-sandbox' ] });
   const page = await browser.newPage();
+  await page.setUserAgent(userAgent);
   await page.goto(process.env.URL);
   await page.waitForSelector(table);
   await page.waitForSelector(iconPlus);
