@@ -2,7 +2,7 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import 'dotenv/config';
 
-const client = new MongoClient(process.env.DB_URI, {
+const client = new MongoClient(process.env.DB_URI ?? '', {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -28,12 +28,15 @@ async function closeConnection() {
 
 async function getCollection() {
   const db = await connectMongo();
-  return db.collection(process.env.COLLECTION);
+  if (!db) {
+    throw new Error('Failed to connect to the database.');
+  }
+  return db.collection(process.env.COLLECTION ?? '');
 }
 
 /**
  * Function to save data on MongoDB
- * @param Array[Object] results - Array of objects with the results to save
+ * @param {Array<{ sorteo: {} }>} results - Array of objects with the results to save
  */
 export async function saveData(results) {
   const collection = await getCollection();

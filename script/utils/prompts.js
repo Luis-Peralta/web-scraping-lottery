@@ -48,6 +48,7 @@ Play 2: [1, 6, 12, 87, 98]
 Play 3: [22, 34, 67, 89, 99]
 Note: The three plays should consist of a unique combination of 5 numbers from the top 5 most probable numbers identified in the analysis.
 `,
+  /** @param {any} data */
   promptLottery: ({ data }) => `
   Here is the data to analyze: ${JSON.stringify(data)}
   - Please make sure your response does not exceed 1500 characters.

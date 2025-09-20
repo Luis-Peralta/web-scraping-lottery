@@ -13,22 +13,25 @@ const makeBodyMessage = async () => {
     const analysis = await aiAnalysis();
     return analysis;
   } else {
-    return `Los números de la suerte para la próxima poceada son: ${giveLuckyNumbers().toString().replaceAll(',',', ')}`;
+    return `Los números de la suerte para la próxima poceada son: ${giveLuckyNumbers().toString().replace(/,/g, ', ')}`;
   }
 };
 
-// we need to update the phone number  every so often
-if( date.includes('Thu') || date.includes('Sat') || date.includes('Tue') ) {
-  client.messages
-    .create({
-      body: await makeBodyMessage(),
-      from: process.env.FROM_NUMBER,
-      to: process.env.TO_NUMBER
-    })
-    .then(message => console.log(message.sid));
-} else {
-  console.log('Today the lucky numbers don\'t send :( ');
-}
+// we need to update the phone number every so often
+(async () => {
+  if( date.includes('Thu') || date.includes('Sat') || date.includes('Tue') ) {
+    const body = await makeBodyMessage();
+    client.messages
+      .create({
+        body,
+        from: process.env.FROM_NUMBER,
+        to: process.env.TO_NUMBER ?? ''
+      })
+      .then(message => console.log(message.sid));
+  } else {
+    console.log('Today the lucky numbers don\'t send :( ');
+  }
+})();
 
 /*
 ******Code to send to multiple numbers !!! DON'T REMOVE*****

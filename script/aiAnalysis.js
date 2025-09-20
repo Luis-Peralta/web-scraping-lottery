@@ -7,7 +7,8 @@ export async function aiAnalysis() {
   const lastResults = dbData.map((item) => [item.results] );
   let prompt = prompts.promptLottery({ data: lastResults });
   let instruction = prompts.instruction2;
-  let analysis = '';
+  /** @type {any} */
+  let analysis;
   
   try {
     console.log('\x1b[36mGenerating AI analysis...\x1b[0m');
