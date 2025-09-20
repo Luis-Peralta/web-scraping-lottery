@@ -51,6 +51,24 @@ Note: The three plays should consist of a unique combination of 5 numbers from t
   promptLottery: ({ data }) => `
   Here is the data to analyze: ${JSON.stringify(data)}
   - Please make sure your response does not exceed 1500 characters.
-  - Always respond in Spanish. Translate everything into Spanish before replying.`
+  - Format the message like a casual text message. 
+    - Use emojis or icons to highlight key sections and important numbers. 
+    - For example, you can use:
+    - 🔢 for numbers
+    - ⭐ for most frequent numbers
+    - 📊 for stats or observations
+    - 📌 for notes
+  - Keep it clear and concise.
+  - Always respond in Spanish. Translate everything into Spanish before replying.
+  - Only respond in the following format. Do not add any explanations, comments, or extra text:
+  Most Frequent Numbers: [numbers]
+  Least Frequent Numbers: [numbers]
+  Suggested Plays:
+  After analyzing the recent draws, these are the 4 sets of numbers with the highest probability of appearing:
+    - Play 1: [number1, number2, number3, number4, number5]
+    - Play 2: [number1, number2, number3, number4, number5]
+    - Play 3: [number1, number2, number3, number4, number5]
+    - Play 4: [number1, number2, number3, number4, number5]
+  `
 };
 
