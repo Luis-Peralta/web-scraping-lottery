@@ -10,7 +10,6 @@ Play 1: [number1, number2, number3, number4, number5]
 Play 2: [number1, number2, number3, number4, number5]
 Play 3: [number1, number2, number3, number4, number5]
 - Make sure the numbers in each play are within the 0–100 range and do not repeat within the same play.
-- Always respond in Spanish. Translate everything into Spanish before replying.
   `,
   // lottery more predictict - Instruction gerated by ChatGPT  
   instruction2: `
@@ -32,7 +31,6 @@ Make sure:
 - Numbers in each play are within the 0–100 range.
 - No number is repeated within the same play.
 - Try to balance hot and cold numbers, and consider recurring patterns.
-- Always respond in Spanish. Translate everything into Spanish before replying.
 `,
   // lottery predictic - Instruction gerated by GeminiAI 
   instruction3: `
@@ -49,8 +47,10 @@ Play 1: [3, 12, 48, 49, 88]
 Play 2: [1, 6, 12, 87, 98]
 Play 3: [22, 34, 67, 89, 99]
 Note: The three plays should consist of a unique combination of 5 numbers from the top 5 most probable numbers identified in the analysis.
-- Always respond in Spanish. Translate everything into Spanish before replying.
 `,
-  promptLottery: ({ data }) => `Here is the data to analyze: ${JSON.stringify(data)}`
+  promptLottery: ({ data }) => `
+  Here is the data to analyze: ${JSON.stringify(data)}
+  - Please make sure your response does not exceed 1500 characters.
+  - Always respond in Spanish. Translate everything into Spanish before replying.`
 };
 
