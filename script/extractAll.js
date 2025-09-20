@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import puppeteer from 'puppeteer';
-import { run } from './mongoConnection.js';
+import { saveData } from './services/mongoConnection.js';
 import 'dotenv/config';
 
 //const selectors:::
@@ -77,5 +77,5 @@ const regexNumber = /[0-9]{1,2}/gm;
   await browser.close();
   console.log('\x1b[36mScript finished!\x1b[0m');
 
-  process.env.SAVE_DATA.toLowerCase() === 'true' && allResults.length > 0 ? run(allResults) : console.log('\x1b[33mdata not sent to MongoDB\x1b[0m');
+  process.env.SAVE_DATA.toLowerCase() === 'true' && allResults.length > 0 ? saveData(allResults) : console.log('\x1b[33mdata not sent to MongoDB\x1b[0m');
 })();

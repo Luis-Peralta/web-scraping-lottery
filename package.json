@@ -5,7 +5,8 @@
   "scripts": {
     "data": "node script/extractAll.js",
     "lucky": "node script/sendMsg.js",
-    "eslint": "npx eslint script"
+    "eslint": "npx eslint script",
+    "auditFix": "npm audit fix"
   },
   "type": "module",
   "repository": {
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/Luis-Peralta/web-scraping-lottery#readme",
   "dependencies": {
+    "@google/genai": "^1.20.0",
     "dotenv": "^16.1.4",
     "mongodb": "^5.6.0",
     "puppeteer": "^22.9.0",

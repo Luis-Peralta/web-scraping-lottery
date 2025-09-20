@@ -2,15 +2,26 @@
 import 'dotenv/config';
 import twilio from 'twilio';
 import { giveLuckyNumbers } from './luckyNumbers.js';
+import { aiAnalysis } from './aiAnalysis.js';
 
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const date = new Date().toUTCString();
+const sendAIAnalysis = process.env.SEND_AI_ANALYSIS === 'true';
+
+const makeBodyMessage = async () => {
+  if (sendAIAnalysis) {
+    const analysis = await aiAnalysis();
+    return analysis;
+  } else {
+    return `Los números de la suerte para la próxima poceada son: ${giveLuckyNumbers().toString().replaceAll(',',', ')}`;
+  }
+};
 
 // we need to update the phone number  every so often
 if( date.includes('Thu') || date.includes('Sat') || date.includes('Tue') ) {
   client.messages
     .create({
-      body: `Los números de la suerte para la próxima poceada son: ${giveLuckyNumbers().toString().replaceAll(',',', ')}`,
+      body: await makeBodyMessage(),
       from: process.env.FROM_NUMBER,
       to: process.env.TO_NUMBER
     })
