@@ -6,7 +6,7 @@ export async function aiAnalysis() {
   const dbData = await getData();
   const lastResults = dbData.map((item) => [item.results] );
   let prompt = prompts.promptLottery({ data: lastResults });
-  let instruction = prompts.lotteryMorePredictic;
+  let instruction = prompts.instruction2;
   let analysis = '';
   
   try {
