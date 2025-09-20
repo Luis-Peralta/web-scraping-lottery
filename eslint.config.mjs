@@ -30,5 +30,6 @@ export default defineConfig([{
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     'no-var': 'error',
+    'no-undef': 'error'
   },
 }]);
