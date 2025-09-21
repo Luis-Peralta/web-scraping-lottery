@@ -16,6 +16,7 @@ jobs:
       DB_NAME: ${{ vars.DB_NAME }}
       SAVE_DATA: ${{ vars.SAVE_DATA }}
       URL: ${{ vars.URL }}
+      SEND_AI_ANALYSIS: ${{ vars.SEND_AI_ANALYSIS }}
     steps:
       - uses: oNaiPs/secrets-to-env-action@v1
         with:

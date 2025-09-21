@@ -12,6 +12,8 @@
         "indent": ["error", 2],
         "quotes": ["error", "single"],
         "semi": ["error", "always"],
-        "no-var":"error"
+        "no-var":"error",
+        "no-undef": "error",
+        "prefer-const": "error"
     }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import puppeteer from 'puppeteer';
-import { run } from './mongoConnection.js';
+import { saveData } from './services/mongoConnection.js';
 import 'dotenv/config';
 
 //const selectors:::
@@ -23,18 +23,21 @@ const regexNumber = /[0-9]{1,2}/gm;
   const allResults = [];
 
   //puppet config:::
-  const browser = await puppeteer.launch({ headless: 'new', defaultViewport: null, args:['--start-maximized', '--no-sandbox' ] });
+  const browser = await puppeteer.launch({ headless: true, defaultViewport: null, args: ['--start-maximized', '--no-sandbox' ] });
   const page = await browser.newPage();
   await page.setUserAgent(userAgent);
-  await page.goto(process.env.URL);
+  await page.goto(process.env.URL ?? '');
   await page.waitForSelector(table);
   await page.waitForSelector(iconPlus);
 
   //save all data:::disable by default
-  if(process.env.ALL_DATA.toLowerCase() === 'true') {
+  if((process.env.ALL_DATA ?? '').toLowerCase() === 'true') {
     for (let index = 0; index < 10; index++) {
+      /** @type {any} */
       const objectResult = { results: {} };
+      /** @type {any} */
       const sorteo = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
+      /** @type {any} */
       const fecha = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
       objectResult.sorteo = parseInt(sorteo[index].match(regexSorteo)[0]);
       objectResult.fecha = fecha[index].match(regexFecha)[0];
@@ -48,8 +51,11 @@ const regexNumber = /[0-9]{1,2}/gm;
     }
   } else {
     //save the last results (first element):::
+    /** @type {any} */
     const objectResult = { results: {} };
+    /** @type {any} */
     const sorteo = await page.$eval(firstLeft, text => text.textContent);
+    /** @type {any} */
     const fecha = await page.$eval(firstRight, text => text.textContent);
 
     objectResult.sorteo = parseInt(sorteo.match(regexSorteo)[0]);
@@ -62,11 +68,15 @@ const regexNumber = /[0-9]{1,2}/gm;
   }
 
   //function to obtain the all results for each sorteo
+  /** @param {any} objectResult */
   async function obtainNumbers(objectResult) {
     await page.waitForSelector(tableHeader);
+    /** @type {any} */
     const nSorteo = await page.$eval(tableHeader, text => text.textContent);
     objectResult.results.numSorteo = parseInt(nSorteo.match(regexSorteo)[0]);
+    /** @type {any} */
     const ubicacion = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
+    /** @type {any} */
     const premiados = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
     for (let index = 0; index < 10; index++) {
       objectResult.results[`number-${ubicacion[index].match(regexNumber)[0]}`] = parseInt(premiados[index].match(regexNumber)[0]);
@@ -77,5 +87,7 @@ const regexNumber = /[0-9]{1,2}/gm;
   await browser.close();
   console.log('\x1b[36mScript finished!\x1b[0m');
 
-  process.env.SAVE_DATA.toLowerCase() === 'true' && allResults.length > 0 ? run(allResults) : console.log('\x1b[33mdata not sent to MongoDB\x1b[0m');
+  (process.env.SAVE_DATA ?? '').toLowerCase() === 'true' && allResults.length > 0 
+    ? saveData(allResults) 
+    : console.log('\x1b[33mdata not sent to MongoDB\x1b[0m');
 })();
