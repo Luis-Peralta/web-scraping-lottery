@@ -149,5 +149,3 @@ web-scraping-lottery/
 	- [Twilio](https://www.twilio.com/)
 
 ---
-
-Feel free to further customize this README to fit your project's evolving needs!
