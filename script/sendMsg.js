@@ -24,8 +24,8 @@ const makeBodyMessage = async () => {
     client.messages
       .create({
         body,
-        from: process.env.FROM_NUMBER,
-        to: process.env.TO_NUMBER ?? ''
+        from: `whatsapp:${process.env.FROM_NUMBER}`,
+        to: `whatsapp:${process.env.TO_NUMBER}`
       })
       .then(message => console.log(message.sid));
   } else {

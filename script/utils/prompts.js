@@ -20,7 +20,7 @@ Your task is to perform a thorough statistical analysis of all the numbers, cons
 3. Patterns and combinations: Look for numbers that tend to appear together in the same draw.
 4. Distribution: Ensure that your suggested numbers are reasonably spread across the 0–100 range.
 After analyzing all these factors, suggest 4 possible future plays. Each play must contain 5 unique numbers.
-[**IMPORTANT**] Present your results in the following format:
+Present your results in the following format:
 After analyzing the recent draws, these are the 4 sets of numbers with the highest probability of appearing:
 Play 1: [number1, number2, number3, number4, number5]
 Play 2: [number1, number2, number3, number4, number5]
@@ -51,7 +51,7 @@ Note: The three plays should consist of a unique combination of 5 numbers from t
   /** @param {any} data */
   promptLottery: ({ data }) => `
   Here is the data to analyze: ${JSON.stringify(data)}
-  - Please make sure your response does not exceed 1500 characters.
+  - Please make sure your response does not exceed 1600 characters.
   - Format the message like a casual text message. 
     - Use emojis or icons to highlight key sections and important numbers. 
     - For example, you can use:
@@ -66,10 +66,10 @@ Note: The three plays should consist of a unique combination of 5 numbers from t
   Least Frequent Numbers: [numbers]
   Suggested Plays:
   After analyzing the recent draws, these are the 4 sets of numbers with the highest probability of appearing:
-    - Play 1: [number1, number2, number3, number4, number5]
-    - Play 2: [number1, number2, number3, number4, number5]
-    - Play 3: [number1, number2, number3, number4, number5]
-    - Play 4: [number1, number2, number3, number4, number5]
+    - ❇️ Play 1: [number1, number2, number3, number4, number5]
+    - ❇️ Play 2: [number1, number2, number3, number4, number5]
+    - ❇️ Play 3: [number1, number2, number3, number4, number5]
+    - ❇️ Play 4: [number1, number2, number3, number4, number5]
   `
 };
 
