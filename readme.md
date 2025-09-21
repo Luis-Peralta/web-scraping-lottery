@@ -64,8 +64,8 @@ web-scraping-lottery/
 		 TWILIO_AUTH_TOKEN=<your_twilio_auth_token>
 		 FROM_NUMBER=<your_twilio_whatsapp_number>
 		 TO_NUMBER=<recipient_whatsapp_number>
-		 SEND_AI_ANALYSIS=true
-		 ALL_DATA=false
+		 SEND_AI_ANALYSIS=#
+		 ALL_DATA=#
 		 ```
 
 4. **(Optional) Run ESLint to check code quality:**
