@@ -10,6 +10,10 @@ const client = new MongoClient(process.env.DB_URI ?? '', {
   }
 });
 
+/**
+ * Function to connect to MongoDB
+ * @returns {Promise<import('mongodb').Db | undefined>} - The connected database instance
+ */
 async function connectMongo() {
   try {
     await client.connect();
@@ -21,11 +25,19 @@ async function connectMongo() {
   }
 }
 
+/**
+ * Function to close the MongoDB connection
+ * @returns {Promise<void>}
+ */
 async function closeConnection() {
   await client.close();
   console.log('\x1b[33mConnection to MongoDB closed\x1b[0m');
 }
 
+/**
+ * Function to get the MongoDB collection
+ * @returns {Promise<import('mongodb').Collection>} - The MongoDB collection instance
+ */
 async function getCollection() {
   const db = await connectMongo();
   if (!db) {

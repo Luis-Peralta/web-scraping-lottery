@@ -5,8 +5,8 @@ import { getData } from './services/mongoConnection.js';
 export async function aiAnalysis() {
   const dbData = await getData();
   const lastResults = dbData.map((item) => [item.results] );
-  let prompt = prompts.promptLottery({ data: lastResults });
-  let instruction = prompts.instruction2;
+  const prompt = prompts.promptLottery({ data: lastResults });
+  const instruction = prompts.instruction2;
   /** @type {any} */
   let analysis;
   
