@@ -4,13 +4,13 @@
 
 ## Project Overview
 
-**Web Scraping Lottery** is an automated Node.js project designed to extract lottery results from the web, analyze them using AI, and deliver insights and lucky numbers via WhatsApp. It leverages Puppeteer for web scraping, MongoDB for data storage, Google Gemini AI for analysis, and Twilio for messaging. The pipeline is scheduled to run on Tuesdays, Thursdays, and Saturdays.
+**Web Scraping Lottery** is an automated Node.js project designed to extract lottery results from the web, analyze them using AI, and deliver insights and lucky numbers via WhatsApp and Telegram. It leverages Puppeteer for web scraping, MongoDB for data storage, Google Gemini AI for analysis, and Twilio and Telegram for messaging. The pipeline is scheduled to run on Tuesdays, Thursdays, and Saturdays.
 
 **Main Features:**
 - Automated web scraping of lottery results
 - Data storage in MongoDB
 - AI-powered statistical analysis and predictions
-- WhatsApp notifications with lucky numbers or AI analysis
+- WhatsApp and Telegram notifications with lucky numbers or AI analysis
 - Modular, extensible codebase
 
 ---
@@ -24,12 +24,16 @@ web-scraping-lottery/
 │   ├── aiAnalysis.js         # Runs AI analysis on lottery data
 │   ├── extractAll.js         # Scrapes lottery results from the web
 │   ├── luckyNumbers.js       # Generates random lucky numbers
-│   ├── sendMsg.js            # Sends WhatsApp messages with results
+│   ├── sendMsg.js            # Sends WhatsApp/Telegram messages with results
 │   ├── services/
 │   │   ├── geminiConnection.js   # Handles Google Gemini AI API calls
-│   │   └── mongoConnection.js    # Manages MongoDB connections and queries
+│   │   ├── mongoConnection.js    # Manages MongoDB connections and queries
+│   │   ├── telegram.js           # Handles Telegram messaging
+│   │   └── twilio.js             # Handles Twilio WhatsApp messaging
 │   └── utils/
 │       └── prompts.js            # Stores AI prompt templates
+│
+├── config.js                 # Centralized configuration for environment variables
 │
 ├── package.json             # Project metadata and dependencies
 ├── jsconfig.json            # JS project configuration
@@ -66,6 +70,8 @@ web-scraping-lottery/
 		 TO_NUMBER=<recipient_whatsapp_number>
 		 SEND_AI_ANALYSIS=#
 		 ALL_DATA=#
+		 TELEGRAM_BOT_TOKEN=<your_telegram_bot_token>
+		 TELEGRAM_CHAT_ID=<your_telegram_chat_id>
 		 ```
 
 4. **(Optional) Run ESLint to check code quality:**
@@ -82,7 +88,7 @@ web-scraping-lottery/
 	npm run data
 	```
 
-- **Send WhatsApp message with lucky numbers or AI analysis:**
+- **Send WhatsApp and Telegram message with lucky numbers or AI analysis:**
 	```sh
 	npm run lucky
 	```
@@ -147,5 +153,6 @@ web-scraping-lottery/
 	- [MongoDB](https://www.mongodb.com/)
 	- [Google Gemini AI](https://ai.google.dev/)
 	- [Twilio](https://www.twilio.com/)
+	- [Telegram Bot API](https://core.telegram.org/bots/api)
 
 ---

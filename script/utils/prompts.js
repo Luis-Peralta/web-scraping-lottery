@@ -70,6 +70,6 @@ Note: The three plays should consist of a unique combination of 5 numbers from t
     - ❇️ Play 2: [number1, number2, number3, number4, number5]
     - ❇️ Play 3: [number1, number2, number3, number4, number5]
     - ❇️ Play 4: [number1, number2, number3, number4, number5]
-  `
+  `,
 };
 
