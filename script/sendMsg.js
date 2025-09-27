@@ -1,12 +1,11 @@
-/* eslint-disable no-undef */
-import 'dotenv/config';
+import config from '@config';
 import twilio from 'twilio';
 import { giveLuckyNumbers } from './luckyNumbers.js';
 import { aiAnalysis } from './aiAnalysis.js';
 
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const client = twilio(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN);
 const date = new Date().toUTCString();
-const sendAIAnalysis = process.env.SEND_AI_ANALYSIS === 'true';
+const sendAIAnalysis = config.SEND_AI_ANALYSIS === 'true';
 
 const makeBodyMessage = async () => {
   if (sendAIAnalysis) {
@@ -24,8 +23,8 @@ const makeBodyMessage = async () => {
     client.messages
       .create({
         body,
-        from: `whatsapp:${process.env.FROM_NUMBER}`,
-        to: `whatsapp:${process.env.TO_NUMBER}`
+        from: `whatsapp:${config.FROM_NUMBER}`,
+        to: `whatsapp:${config.TO_NUMBER}`,
       })
       .then(message => console.log(message.sid));
   } else {

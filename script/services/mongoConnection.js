@@ -1,13 +1,12 @@
-/* eslint-disable no-undef */
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import 'dotenv/config';
+import config from '@config';
 
-const client = new MongoClient(process.env.DB_URI ?? '', {
+const client = new MongoClient(config.DB_URI ?? '', {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
 
 /**
@@ -17,7 +16,7 @@ const client = new MongoClient(process.env.DB_URI ?? '', {
 async function connectMongo() {
   try {
     await client.connect();
-    const db = client.db(process.env.DB_NAME);
+    const db = client.db(config.DB_NAME);
     console.log('\x1b[32mYou successfully connected to MongoDB!\x1b[0m');
     return db;
   } catch(e) {
@@ -43,7 +42,7 @@ async function getCollection() {
   if (!db) {
     throw new Error('Failed to connect to the database.');
   }
-  return db.collection(process.env.COLLECTION ?? '');
+  return db.collection(config.COLLECTION ?? '');
 }
 
 /**

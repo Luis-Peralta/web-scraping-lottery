@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
+  allConfig: js.configs.all,
 });
 
 export default defineConfig([{
@@ -31,6 +31,13 @@ export default defineConfig([{
     semi: ['error', 'always'],
     'no-var': 'error',
     'no-undef': 'error',
-    'prefer-const': 'error'
+    'prefer-const': 'error',
+    'comma-dangle': ['error', {
+      'arrays': 'always-multiline',
+      'objects': 'always-multiline',
+      'imports': 'always-multiline',
+      'exports': 'always-multiline',
+      'functions': 'never',
+    }],
   },
 }]);

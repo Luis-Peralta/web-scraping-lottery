@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
 import puppeteer from 'puppeteer';
 import { saveData } from './services/mongoConnection.js';
-import 'dotenv/config';
+import config from '@config';
 
 //const selectors:::
 const table = '.results-list';
@@ -26,12 +25,12 @@ const regexNumber = /[0-9]{1,2}/gm;
   const browser = await puppeteer.launch({ headless: true, defaultViewport: null, args: ['--start-maximized', '--no-sandbox' ] });
   const page = await browser.newPage();
   await page.setUserAgent(userAgent);
-  await page.goto(process.env.URL ?? '');
+  await page.goto(config.URL ?? '');
   await page.waitForSelector(table);
   await page.waitForSelector(iconPlus);
 
   //save all data:::disable by default
-  if((process.env.ALL_DATA ?? '').toLowerCase() === 'true') {
+  if((config.ALL_DATA ?? '').toLowerCase() === 'true') {
     for (let index = 0; index < 10; index++) {
       /** @type {any} */
       const objectResult = { results: {} };
@@ -87,7 +86,7 @@ const regexNumber = /[0-9]{1,2}/gm;
   await browser.close();
   console.log('\x1b[36mScript finished!\x1b[0m');
 
-  (process.env.SAVE_DATA ?? '').toLowerCase() === 'true' && allResults.length > 0 
+  (config.SAVE_DATA ?? '').toLowerCase() === 'true' && allResults.length > 0 
     ? saveData(allResults) 
     : console.log('\x1b[33mdata not sent to MongoDB\x1b[0m');
 })();
