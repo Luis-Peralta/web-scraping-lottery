@@ -1,9 +1,8 @@
 import config from '../config.js';
-import twilio from 'twilio';
+import { sendMessage } from './services/telegram.js';
 import { giveLuckyNumbers } from './luckyNumbers.js';
 import { aiAnalysis } from './aiAnalysis.js';
 
-const client = twilio(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN);
 const date = new Date().toUTCString();
 const sendAIAnalysis = config.SEND_AI_ANALYSIS === 'true';
 
@@ -20,27 +19,8 @@ const makeBodyMessage = async () => {
 (async () => {
   if( date.includes('Thu') || date.includes('Sat') || date.includes('Tue') ) {
     const body = await makeBodyMessage();
-    client.messages
-      .create({
-        body,
-        from: `whatsapp:${config.FROM_NUMBER}`,
-        to: `whatsapp:${config.TO_NUMBER}`,
-      })
-      .then(message => console.log(message.sid));
+    await sendMessage(body);
   } else {
     console.log('Today the lucky numbers don\'t send :( ');
   }
 })();
-
-/*
-******Code to send to multiple numbers !!! DON'T REMOVE*****
-const numbersToMessage = ['number1, 'number2'];
-
-numbersToMessage.forEach(async number => {
-  const message = await client.messages.create({
-    body: `Los números de la suerte para la proxima poceada son: ${giveLuckyNumbers()}`,
-    from: 'from_number',
-    to: number
-  });
-  console.log(message.status);
-});*/

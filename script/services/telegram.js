@@ -3,7 +3,7 @@ import config from '../../config.js';
 
 const token = config.TELEGRAM_BOT_TOKEN;
 const chatId = config.TELEGRAM_CHAT_ID;
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(token, { polling: false });
 
 /**
  * Get Chat ID from Telegram messages
