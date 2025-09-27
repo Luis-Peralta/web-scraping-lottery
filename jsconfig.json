@@ -3,9 +3,6 @@
     "checkJs": true,
     "strict": true,
     "noEmit": true,
-    "paths": {
-      "@config": ["./config.js"],
-    }
   },
   "exclude": ["node_modules"],
   "include": ["**/*.js"],

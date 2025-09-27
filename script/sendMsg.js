@@ -1,4 +1,4 @@
-import config from '@config';
+import config from '../config.js';
 import twilio from 'twilio';
 import { giveLuckyNumbers } from './luckyNumbers.js';
 import { aiAnalysis } from './aiAnalysis.js';

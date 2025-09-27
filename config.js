@@ -21,4 +21,5 @@ export default {
   TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID ?? '',
   TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN ?? '',
   TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN ?? '',
+  TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID ?? '',
 };

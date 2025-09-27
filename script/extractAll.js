@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import { saveData } from './services/mongoConnection.js';
-import config from '@config';
+import config from '../config.js';
 
 //const selectors:::
 const table = '.results-list';
