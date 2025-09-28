@@ -2,8 +2,8 @@ import config from '../config.js';
 import { sendMessage } from './services/telegram.js';
 import { giveLuckyNumbers } from './luckyNumbers.js';
 import { aiAnalysis } from './aiAnalysis.js';
+import { isLotteryDay } from './utils/date.js';
 
-const date = new Date().toUTCString();
 const sendAIAnalysis = config.SEND_AI_ANALYSIS === 'true';
 
 const makeBodyMessage = async () => {
@@ -15,9 +15,8 @@ const makeBodyMessage = async () => {
   }
 };
 
-// we need to update the phone number every so often
 (async () => {
-  if( date.includes('Thu') || date.includes('Sat') || date.includes('Tue') ) {
+  if(isLotteryDay()) {
     const body = await makeBodyMessage();
     await sendMessage(body);
   } else {

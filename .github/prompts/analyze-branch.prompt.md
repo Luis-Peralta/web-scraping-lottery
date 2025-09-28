@@ -23,6 +23,6 @@ The description should include:
 Keep the language simple, clear, and professional.
 Give it to me in a Markdown code.
 
-- Run `git diff` to analyze the changes made in the branch.
+- Run `git diff origin/main` to analyze the changes made in the branch.
 - Run `git status` to obtain the branch name.
 - (optional) The User will provide you with the branch name in the next message or more context.
