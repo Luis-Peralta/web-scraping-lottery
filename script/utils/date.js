@@ -8,10 +8,10 @@ const opts = {
   weekday: 'short',
 };
 
-const days = ['Thu', 'Sun', 'Tue'];
+const days = ['Thu', 'Sat', 'Tue'];
 
 /**
- * Check if today is a lottery day (Thursday, Sunday, or Tuesday)
+ * Check if today is a lottery day (Thursday, Saturday, or Tuesday)
  * @returns {boolean} True if today is a lottery day, false otherwise
  */
 export function isLotteryDay() {
