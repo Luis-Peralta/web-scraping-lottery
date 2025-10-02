@@ -6,7 +6,8 @@
     "data": "node script/extractAll.js",
     "lucky": "node script/sendMsg.js",
     "eslint": "npx eslint script",
-    "auditFix": "npm audit fix"
+    "auditFix": "npm audit fix",
+    "docker": "docker-compose down && docker-compose up -d"
   },
   "type": "module",
   "repository": {
