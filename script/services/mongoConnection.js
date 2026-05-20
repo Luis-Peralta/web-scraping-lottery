@@ -39,10 +39,10 @@ export async function saveData(results) {
   try {
     // Check if the sorteo number already exists on the database
     const targetSorteo = results[0].sorteo;
-    const findResult = await Result.find({ sorteo: targetSorteo }).lean();
+    const findResult = await Result.findOne({ sorteo: targetSorteo }).lean();
       
-    // Save data --- if the value is 0 it's because the data wasn't found
-    if (findResult.length === 0) {
+    // Save data --- if the value is null it's because the data wasn't found
+    if (!findResult) {
       const insertResult = await Result.insertMany(results);
       console.log('Inserted documents =>', insertResult);
     } else {
