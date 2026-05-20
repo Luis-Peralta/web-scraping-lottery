@@ -7,7 +7,8 @@
     "lucky": "node script/sendMsg.js",
     "eslint": "npx eslint script",
     "auditFix": "npm audit fix",
-    "docker": "docker-compose down && docker-compose up -d"
+    "docker": "docker-compose down && docker-compose up -d",
+    "workflow": "act -W .github/workflows/github-action.yml --env-file .env workflow_dispatch"
   },
   "type": "module",
   "repository": {

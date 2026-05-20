@@ -36,6 +36,8 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm i
+      - name: Install Puppeteer system dependencies
+        run: bash script/install-deps.sh
       - name: Verify eslint
         run: npm run eslint
       - name: Run script
