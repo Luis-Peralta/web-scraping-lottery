@@ -11,6 +11,7 @@ const itemsRight = '[class="results-list__item"] .results-number:nth-child(2)';
 const firstLeft = '[class="results-list__item"]:nth-child(2) .results-number:nth-child(1)';
 const firstRight = '[class="results-list__item"]:nth-child(2) .results-number:nth-child(2)';
 const firstIconPlus = '.results-list__item:nth-child(2) a';
+const selectJackpot5 = (/** @type {number} */ index) => `.group-body > .card-list:nth-of-type(2) [class="results-list__item"]:nth-child(2) .results-number:nth-of-type(${index})`;
 const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0';
 const regexSorteo = /[0-9]{1,7}/gm;
 const regexFecha = /([\d]{2}\/[\d]{2}\/[\d]{2})/gm;
@@ -44,6 +45,7 @@ const regexNumber = /[0-9]{1,2}/gm;
       await results[index].evaluate(button => button.click());
   
       await obtainNumbers(objectResult);
+      objectResult.pozo = await obtainJackpotFiveDetails();
       
       allResults.push(objectResult);
       await page.goBack();
@@ -62,11 +64,12 @@ const regexNumber = /[0-9]{1,2}/gm;
     await page.click(firstIconPlus);
 
     await obtainNumbers(objectResult);
+    objectResult.pozo = await obtainJackpotFiveDetails();
 
     allResults.push(objectResult);
   }
 
-  //function to obtain the all results for each sorteo
+  // function to obtain the all results for each sorteo
   /** @param {any} objectResult */
   async function obtainNumbers(objectResult) {
     await page.waitForSelector(tableHeader);
@@ -80,6 +83,25 @@ const regexNumber = /[0-9]{1,2}/gm;
     for (let index = 0; index < 10; index++) {
       objectResult.results[`number-${ubicacion[index].match(regexNumber)[0]}`] = parseInt(premiados[index].match(regexNumber)[0]);
     }
+  }
+
+  // Function to obtain the jackpot five details (vacant, prize amount, number of winners)
+  /** 
+   * @returns {Promise<object>}
+   */
+  async function obtainJackpotFiveDetails() {
+    const [jackpot, rawTotal, winnersNumber, rawVacant] = await Promise.all(
+      [1, 2, 3, 4].map(index => 
+        page.$eval(selectJackpot5(index), text => text.textContent.trim())
+      )
+    );
+
+    return {
+      jackpot,
+      totalAccumulated: `$${rawTotal}`,
+      winnersNumber,
+      vacant: /VACANTE/i.test(rawVacant),
+    };
   }
 
   console.table(allResults);

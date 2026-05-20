@@ -60,7 +60,7 @@ export async function saveData(results) {
  * @param {Object} params - Parameters for the query
  * @param {Object} [params.query] - Query to filter the results
  * @param {Number} [params.limit] - Limit of results to return
- * @returns {Promise<Array<{ sorteo: number, fecha: string, results: any, vacant: boolean|null, acumulado: number|null }>>} - Array of objects with the results
+ * @returns {Promise<Array<{ sorteo: number, fecha: string, results: any, pozo: any }>>} - Array of objects with the results
  */
 export async function getData({ query = {}, limit = 50 } = {}) {
   await connectMongo();

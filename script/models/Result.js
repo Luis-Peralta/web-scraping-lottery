@@ -6,8 +6,7 @@ const resultSchema = new mongoose.Schema({
   sorteo: { type: Number, required: true, unique: true },
   fecha: { type: String, required: true },
   results: { type: mongoose.Schema.Types.Mixed, required: true },
-  vacant: { type: Boolean, default: null },
-  acumulado: { type: Number, default: null },
+  pozo: { type: mongoose.Schema.Types.Mixed, required: true },
 }, {
   // Disable automatic __v field to keep documents clean and matching the native driver insertions
   versionKey: false,
