@@ -11,7 +11,7 @@ const itemsRight = '[class="results-list__item"] .results-number:nth-child(2)';
 const firstLeft = '[class="results-list__item"]:nth-child(2) .results-number:nth-child(1)';
 const firstRight = '[class="results-list__item"]:nth-child(2) .results-number:nth-child(2)';
 const firstIconPlus = '.results-list__item:nth-child(2) a';
-const selectJackpot5 = (/** @type {number} */ index) => `.group-body > .card-list:nth-of-type(2) [class="results-list__item"]:nth-child(2) .results-number:nth-of-type(${index})`;
+const selectJackpot5 = (/** @type {number} */ index) => `.group-body > .card-list:nth-of-type(2) .results-list__item:nth-child(2) .results-number:nth-of-type(${index})`;
 const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0';
 const regexSorteo = /[0-9]{1,7}/gm;
 const regexFecha = /([\d]{2}\/[\d]{2}\/[\d]{2})/gm;
