@@ -23,10 +23,11 @@ function getChatId() {
 /**
  * Send message to Telegram chat
  * @param {string} message - Message to send
+ * @param {object} [options] - Optional settings for the message
  */
-async function sendMessage(message = '') {
+async function sendMessage(message = '', options = {}) {
   try {
-    await bot.sendMessage(chatId, message);
+    await bot.sendMessage(chatId, message, options);
     console.log('Message sent to Telegram successfully');
   } catch (error) {
     console.error('Error sending message to Telegram:', error);
