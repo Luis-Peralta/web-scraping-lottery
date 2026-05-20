@@ -14,6 +14,7 @@ export const formatLotteryResult = (resultList) => {
   // Extract and format numbers, padding them with 0 if necessary
   const numbers = Object.keys(results || {})
     .filter(key => key.startsWith('number-'))
+    .sort((a, b) => parseInt(a.split('-')[1]) - parseInt(b.split('-')[1]))
     .map(key => String(results[key]).padStart(2, '0'))
     .join(' - ');
     
