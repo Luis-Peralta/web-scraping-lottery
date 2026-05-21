@@ -156,3 +156,6 @@ web-scraping-lottery/
 	- [Telegram Bot API](https://core.telegram.org/bots/api)
 
 ---
+
+## Last Update:
+- 2025-10-19: Added Telegram bot integration and improved error handling.

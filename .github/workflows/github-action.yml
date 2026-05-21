@@ -21,14 +21,14 @@ jobs:
       - uses: oNaiPs/secrets-to-env-action@v1
         with:
           secrets: ${{ toJSON(secrets) }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Cache node modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
@@ -36,6 +36,8 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm i
+      - name: Install Puppeteer system dependencies
+        run: bash script/install-deps.sh
       - name: Verify eslint
         run: npm run eslint
       - name: Run script

@@ -93,3 +93,6 @@ Thumbs.db
 
 # Package-lock.json
 package-lock.json
+
+# Mongo
+mongo_data/
