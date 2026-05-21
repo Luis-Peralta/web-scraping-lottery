@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer';
 import { saveData } from './services/mongoConnection.js';
 import config from '../config.js';
+import process from 'process';
 
 //const selectors:::
 const table = '.results-list';
@@ -23,10 +24,24 @@ const regexNumber = /[0-9]{1,2}/gm;
   const allResults = [];
 
   //puppet config:::
-  const browser = await puppeteer.launch({ headless: true, defaultViewport: null, args: ['--start-maximized', '--no-sandbox' ] });
+  const isCI = !!process.env.CI;
+  const browser = await puppeteer.launch({
+    headless: isCI ? 'shell' : true,
+    defaultViewport: null,
+    args: [
+      '--start-maximized',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+    ],
+  });
   const page = await browser.newPage();
   await page.setUserAgent(userAgent);
-  await page.goto(config.URL ?? '');
+  await page.goto(config.URL ?? '', {
+    waitUntil: isCI ? 'domcontentloaded' : 'load',
+    timeout: 60000,
+  });
   await page.waitForSelector(table);
   await page.waitForSelector(iconPlus);
 
