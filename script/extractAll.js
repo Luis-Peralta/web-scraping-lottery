@@ -38,9 +38,11 @@ const regexNumber = /[0-9]{1,2}/gm;
   });
   const page = await browser.newPage();
   await page.setUserAgent(userAgent);
-  await page.goto(config.URL ?? '', {
+  if (isCI) {
+    page.setDefaultTimeout(60000);
+  }
+  await page.goto(config.URL, {
     waitUntil: isCI ? 'domcontentloaded' : 'load',
-    timeout: 60000,
   });
   await page.waitForSelector(table);
   await page.waitForSelector(iconPlus);
