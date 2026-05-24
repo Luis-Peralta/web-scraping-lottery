@@ -26,12 +26,11 @@ const sendJackpotStatus = async () => {
 };
 
 (async () => {
+  await sendJackpotStatus();
   if(isLotteryDay()) {
     const body = await makeBodyMessage();
-    await sendJackpotStatus();
     await sendMessage(body);
   } else {
     console.log('Today the lucky numbers don\'t send :( ');
-    await sendJackpotStatus();
   }
 })();
