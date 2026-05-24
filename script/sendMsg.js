@@ -10,6 +10,7 @@ const sendAIAnalysis = config.SEND_AI_ANALYSIS === 'true';
 // @ts-ignore
 const lastResult = await getData({ limit: 1 });
 
+// AI analysis
 const makeBodyMessage = async () => {
   if (sendAIAnalysis) {
     const analysis = await aiAnalysis();
@@ -19,10 +20,15 @@ const makeBodyMessage = async () => {
   }
 };
 
+// Daily Jackpot status
+const sendJackpotStatus = async () => {
+  await sendMessage(formatLotteryResult(lastResult), { parse_mode: 'Markdown' });
+};
+
 (async () => {
+  await sendJackpotStatus();
   if(isLotteryDay()) {
     const body = await makeBodyMessage();
-    await sendMessage(formatLotteryResult(lastResult), { parse_mode: 'Markdown' });
     await sendMessage(body);
   } else {
     console.log('Today the lucky numbers don\'t send :( ');
