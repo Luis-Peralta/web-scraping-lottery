@@ -26,7 +26,7 @@ const regexNumber = /[0-9]{1,2}/gm;
   //puppet config:::
   const isCI = !!process.env.CI;
   const browser = await puppeteer.launch({
-    headless: isCI ? 'shell' : true,
+    headless: true,
     defaultViewport: null,
     args: [
       '--start-maximized',
@@ -42,7 +42,7 @@ const regexNumber = /[0-9]{1,2}/gm;
     page.setDefaultTimeout(60000);
   }
   await page.goto(config.URL, {
-    waitUntil: isCI ? 'domcontentloaded' : 'load',
+    waitUntil: 'domcontentloaded',
   });
   await page.waitForSelector(table);
   await page.waitForSelector(iconPlus);
