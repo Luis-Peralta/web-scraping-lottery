@@ -118,59 +118,66 @@ async function takeDebugScreenshot(page, label = 'error') {
   // Higher default timeout in CI
   page.setDefaultTimeout(WAIT_TIMEOUT);
 
-  // Use the robust navigation helper
-  await safeGoto(page, config.URL, NAV_TIMEOUT);
-
-  // Wait for the critical elements with explicit (longer in CI) timeout
-  await page.waitForSelector(table, { timeout: WAIT_TIMEOUT });
-  await page.waitForSelector(iconPlus, { timeout: WAIT_TIMEOUT });
-
-  // Inner helper functions (need access to the current page instance)
-  /** @param {any} objectResult */
-  async function obtainNumbers(objectResult) {
-    await page.waitForSelector(tableHeader, { timeout: WAIT_TIMEOUT });
-    /** @type {any} */
-    const nSorteo = await page.$eval(tableHeader, text => text.textContent);
-    objectResult.results.numSorteo = parseInt(nSorteo.match(regexSorteo)[0]);
-    /** @type {any} */
-    const ubicacion = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
-    /** @type {any} */
-    const premiados = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
-    for (let index = 0; index < 10; index++) {
-      objectResult.results[`number-${ubicacion[index].match(regexNumber)[0]}`] = parseInt(premiados[index].match(regexNumber)[0]);
-    }
-  }
-
-  /** 
-   * @returns {Promise<object>}
-   */
-  async function obtainJackpotFiveDetails() {
-    const [jackpot, rawTotal, winnersNumber, rawVacant] = await Promise.all(
-      [1, 2, 3, 4].map(index => 
-        page.$eval(selectJackpot5(index), text => text.textContent.trim())
-      )
-    );
-
-    return {
-      jackpot,
-      totalAccumulated: `$${rawTotal}`,
-      winnersNumber,
-      vacant: /VACANTE/i.test(rawVacant),
-    };
-  }
-
   try {
+    // Use the robust navigation helper (now inside try so errors get screenshot + guaranteed browser close)
+    await safeGoto(page, config.URL, NAV_TIMEOUT);
+
+    // Wait for the critical elements with explicit (longer in CI) timeout
+    await page.waitForSelector(table, { timeout: WAIT_TIMEOUT });
+    await page.waitForSelector(iconPlus, { timeout: WAIT_TIMEOUT });
+
+    // Inner helper functions (need access to the current page instance)
+    /** @param {any} objectResult */
+    async function obtainNumbers(objectResult) {
+      await page.waitForSelector(tableHeader, { timeout: WAIT_TIMEOUT });
+      /** @type {any} */
+      const nSorteoText = await page.$eval(tableHeader, text => text.textContent || '');
+      const nSorteoMatch = nSorteoText.match(regexSorteo);
+      objectResult.results.numSorteo = nSorteoMatch ? parseInt(nSorteoMatch[0], 10) : 0;
+
+      /** @type {any} */
+      const ubicacion = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent || ''); });
+      /** @type {any} */
+      const premiados = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent || ''); });
+      for (let index = 0; index < 10; index++) {
+        const numMatch = (ubicacion[index] || '').match(regexNumber);
+        const premioMatch = (premiados[index] || '').match(regexNumber);
+        const key = numMatch ? `number-${numMatch[0]}` : `number-${index}`;
+        objectResult.results[key] = premioMatch ? parseInt(premioMatch[0], 10) : 0;
+      }
+    }
+
+    /** 
+     * @returns {Promise<object>}
+     */
+    async function obtainJackpotFiveDetails() {
+      const [jackpot, rawTotal, winnersNumber, rawVacant] = await Promise.all(
+        [1, 2, 3, 4].map(index => 
+          page.$eval(selectJackpot5(index), text => (text.textContent || '').trim())
+        )
+      );
+
+      return {
+        jackpot,
+        totalAccumulated: `$${rawTotal}`,
+        winnersNumber,
+        vacant: /VACANTE/i.test(rawVacant),
+      };
+    }
+
     //save all data:::disable by default
     if((config.ALL_DATA ?? '').toLowerCase() === 'true') {
       for (let index = 0; index < 10; index++) {
         /** @type {any} */
         const objectResult = { results: {} };
         /** @type {any} */
-        const sorteo = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent); });
+        const sorteoTexts = await page.$$eval(itemsLeft, texts => { return texts.map(text => text.textContent || ''); });
         /** @type {any} */
-        const fecha = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent); });
-        objectResult.sorteo = parseInt(sorteo[index].match(regexSorteo)[0]);
-        objectResult.fecha = fecha[index].match(regexFecha)[0];
+        const fechaTexts = await page.$$eval(itemsRight, texts => { return texts.map(text => text.textContent || ''); });
+        const sorteoMatch = sorteoTexts[index] ? sorteoTexts[index].match(regexSorteo) : null;
+        const fechaMatch = fechaTexts[index] ? fechaTexts[index].match(regexFecha) : null;
+        objectResult.sorteo = sorteoMatch ? parseInt(sorteoMatch[0], 10) : 0;
+        objectResult.fecha = fechaMatch ? fechaMatch[0] : '';
         const results = await page.$$(iconPlus);
         await results[index].evaluate(button => button.click());
 
@@ -187,12 +194,13 @@ async function takeDebugScreenshot(page, label = 'error') {
       /** @type {any} */
       const objectResult = { results: {} };
       /** @type {any} */
-      const sorteo = await page.$eval(firstLeft, text => text.textContent);
+      const sorteoText = await page.$eval(firstLeft, text => text.textContent || '');
       /** @type {any} */
-      const fecha = await page.$eval(firstRight, text => text.textContent);
-
-      objectResult.sorteo = parseInt(sorteo.match(regexSorteo)[0]);
-      objectResult.fecha = fecha.match(regexFecha)[0];
+      const fechaText = await page.$eval(firstRight, text => text.textContent || '');
+      const sorteoMatch = sorteoText.match(regexSorteo);
+      const fechaMatch = fechaText.match(regexFecha);
+      objectResult.sorteo = sorteoMatch ? parseInt(sorteoMatch[0], 10) : 0;
+      objectResult.fecha = fechaMatch ? fechaMatch[0] : '';
       await page.click(firstIconPlus);
 
       await obtainNumbers(objectResult);
