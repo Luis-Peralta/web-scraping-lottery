@@ -7,9 +7,9 @@ on:
   workflow_dispatch:  
 
 jobs:
-  install-dependencies:
+  scrape-and-notify:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       ALL_DATA: ${{ vars.ALL_DATA }}
       COLLECTION: ${{ vars.COLLECTION }}
@@ -40,7 +40,21 @@ jobs:
         run: bash script/install-deps.sh
       - name: Verify eslint
         run: npm run eslint
-      - name: Run script
+      - name: Run scraping (extract lottery data)
+        id: scrape
+        continue-on-error: true   # we still want to attempt notifications + capture artifacts
         run: npm run data
-      - name: Sending the lucky numbers!
+      - name: Send notifications (lucky numbers / AI analysis)
+        # Run notifications even if scraping had issues (it may have saved partial data)
+        if: always()
         run: npm run lucky
+      - name: Upload debug artifacts (screenshots, etc) on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: puppeteer-debug-${{ github.run_id }}
+          path: |
+            puppeteer-debug-*.png
+            *.log
+          retention-days: 7
+          if-no-files-found: warn
