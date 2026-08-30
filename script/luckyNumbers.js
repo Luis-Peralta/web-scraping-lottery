@@ -8,5 +8,5 @@ export function giveLuckyNumbers() {
     numbers.push(number);
   }
 
-  return numbers;
+  return numbers.sort((a, b) => a - b);
 }

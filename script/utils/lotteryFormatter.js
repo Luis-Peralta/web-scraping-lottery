@@ -15,11 +15,16 @@ export const formatLotteryResult = (resultList) => {
   const numbers = Object.keys(results || {})
     .filter(key => key.startsWith('number-'))
     .sort((a, b) => parseInt(a.split('-')[1]) - parseInt(b.split('-')[1]))
-    .map(key => String(results[key]).padStart(2, '0'))
+    .map(key => Number(results[key]))
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b)
+    .map(number => String(number).padStart(2, '0'))
     .join(' - ');
     
   const jackpotName = pozo?.jackpot || pozo?.jackpotFive || 'Pozo';
-  const accumulated = pozo?.totalAccumulated || 'N/A';
+  const estimatedNextDraw = pozo?.estimatedNextDraw
+    ? `$${pozo.estimatedNextDraw}`
+    : 'N/A';
   const vacantStatus = pozo?.vacant 
     ? '🔴 *VACANTE*' 
     : `🟢 *GANADOR/ES: ${pozo?.winnersNumber || 1}*`;
@@ -33,6 +38,6 @@ export const formatLotteryResult = (resultList) => {
 \`[ ${numbers || 'N/A'} ]\`
 
 💰 *${jackpotName}* 💰
-💵 *Monto Acumulado:* ${accumulated}
+🎯 *Pozo estimado próximo sorteo:* ${estimatedNextDraw}
 🏆 *Estado:* ${vacantStatus}`;
 };

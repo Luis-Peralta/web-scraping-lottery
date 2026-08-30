@@ -3,6 +3,7 @@ import { saveData } from './services/mongoConnection.js';
 import config from '../config.js';
 import process from 'process';
 import path from 'path';
+import { extractEstimatedJackpotFromPdf } from './services/poceadaPdf.js';
 
 //const selectors:::
 const table = '.results-list';
@@ -162,7 +163,28 @@ async function takeDebugScreenshot(page, label = 'error') {
         totalAccumulated: `$${rawTotal}`,
         winnersNumber,
         vacant: /VACANTE/i.test(rawVacant),
+        estimatedNextDraw: await obtainEstimatedNextDrawJackpot(),
       };
+    }
+
+    /**
+     * @returns {Promise<string | null>}
+     */
+    async function obtainEstimatedNextDrawJackpot() {
+      try {
+        const pdfUrl = await page.$eval('a[href*=".pdf"]', link => link.href);
+        const amount = await extractEstimatedJackpotFromPdf(pdfUrl);
+
+        if (!amount) {
+          console.warn('\x1b[33mEstimated jackpot was not found in the Poceada PDF.\x1b[0m');
+        }
+
+        return amount;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        console.warn(`\x1b[33mCould not obtain the estimated jackpot: ${errorMessage}\x1b[0m`);
+        return null;
+      }
     }
 
     //save all data:::disable by default
