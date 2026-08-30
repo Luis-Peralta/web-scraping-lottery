@@ -5,6 +5,7 @@
   "scripts": {
     "data": "node script/extractAll.js",
     "lucky": "node script/sendMsg.js",
+    "test": "node --test",
     "eslint": "npx eslint script",
     "auditFix": "npm audit fix",
     "docker": "docker-compose down && docker-compose up -d",
@@ -26,6 +27,7 @@
     "dotenv": "^16.1.4",
     "mongoose": "^9.6.2",
     "node-telegram-bot-api": "^0.66.0",
+    "pdf-parse": "^2.4.5",
     "puppeteer": "^25.0.4",
     "twilio": "^4.11.2"
   },
