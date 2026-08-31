@@ -21,7 +21,6 @@ export const formatLotteryResult = (resultList) => {
     .map(number => String(number).padStart(2, '0'))
     .join(' - ');
     
-  const jackpotName = pozo?.jackpot || pozo?.jackpotFive || 'Pozo';
   const estimatedNextDraw = pozo?.estimatedNextDraw
     ? `$${pozo.estimatedNextDraw}`
     : 'N/A';
@@ -29,15 +28,13 @@ export const formatLotteryResult = (resultList) => {
     ? '🔴 *VACANTE*' 
     : `🟢 *GANADOR/ES: ${pozo?.winnersNumber || 1}*`;
 
-  return `📊 *RESULTADOS DEL ÚLTIMO SORTEO* 📊
-
+  return `📊 *RESULTADOS DEL ÚLTIMO SORTEO*
 📅 *Fecha:* ${fecha || 'N/A'}
 🔄 *Sorteo N°:* ${sorteo || 'N/A'}
 
 🔢 *Números Sorteados:* 
 \`[ ${numbers || 'N/A'} ]\`
 
-💰 *${jackpotName}* 💰
-🎯 *Pozo estimado próximo sorteo:* ${estimatedNextDraw}
-🏆 *Estado:* ${vacantStatus}`;
+🏆 *Estado:* ${vacantStatus}
+💰 *Pozo estimado próximo sorteo:* ${estimatedNextDraw}`;
 };
